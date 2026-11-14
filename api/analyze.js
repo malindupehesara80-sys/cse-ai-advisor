@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 Analyze the company or query: "${targetQuery}". 
 Provide financial insights, valuation context, risks, and explain key terms clearly. Answer in a mix of clear English and Sinhala (සිංහලෙන්) where appropriate for local investors. Keep it structured and easy to read on mobile.`;
 
-    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$){apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
