@@ -1,58 +1,107 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE AI Advisor - කොළඹ කොටස් වෙළඳපොළ පර්යේෂණ වේදිකාව</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>CSE AI Advisor - Sri Lanka Stock Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans min-h-screen">
-    
-    <!-- Top Header -->
-    <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
-        <div>
-            <h1 class="text-xl font-bold text-slate-900">🇱🇰 CSE AI Advisor</h1>
-            <p class="text-xs text-slate-500">කොළඹ කොටස් වෙළඳපොළ AI ආයෝජන පර්යේෂණ සහ මූල්‍ය අධ්‍යාපන වේදිකාව</p>
-        </div>
-        <span class="text-xs font-medium px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            සිංහල / English
-        </span>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header -->
+    <header class="bg-emerald-700 text-white p-4 shadow-md text-center">
+        <h1 class="text-xl font-bold">🇱🇰 CSE AI Advisor</h1>
+        <p class="text-xs text-emerald-100 mt-1">Smart Stock Research & Financial Education for Colombo Stock Exchange</p>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-4xl mx-auto p-6 space-y-6">
+    <!-- Main Content -->
+    <main class="p-4 max-w-md mx-auto w-full flex-grow">
         
-        <!-- Welcome Banner -->
-        <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center space-y-3">
-            <h2 class="text-2xl font-bold text-slate-800">ඔබගේ ස්මාර්ට් ආයෝජන සහකාර</h2>
-            <p class="text-sm text-slate-600 max-w-xl mx-auto">
-                Fundamental Analysis, Technical Analysis, Valuation සහ Risk කළමනාකරණය දැන් සරල සිංහලෙන් ඉගෙන ගන්න සහ සමාගම් පර්යේෂණ කරන්න.
-            </p>
-            <div class="pt-2">
-                <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-blue-200">
-                    🚀 System Status: Database & AI Ready (100% Free Tier)
-                </span>
-            </div>
-        </section>
+        <!-- Status Badge -->
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-2 rounded-lg text-center mb-4">
+            🟢 System Status: Database & AI Ready (100% Free Plan)
+        </div>
 
-        <!-- Modules Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition">
-                <h3 class="font-bold text-slate-800 mb-1">📊 සමාගම් පර්යේෂණ (Company Research)</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">CSE සමාගම්වල මූල්‍ය ප්‍රකාශන, ව්‍යාපාරික ආකෘතිය සහ අවදානම් විශ්ලේෂණය.</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition">
-                <h3 class="font-bold text-slate-800 mb-1">💡 මූල්‍ය අධ්‍යාපන මධ්‍යස්ථානය (Learning Center)</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">P/E, ROE, DCF සහ Candlestick ප්‍රස්ථාර සරල සිංහල උදාහරණ සමඟ ඉගෙන ගන්න.</p>
-            </div>
-        </section>
+        <!-- Research Box -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-4">
+            <h2 class="text-sm font-semibold mb-2 text-slate-700">🔍 Company Research (CSE)</h2>
+            <input type="text" id="companyInput" placeholder="Enter symbol or name (e.g., JKH, SAMP, DIAL)" 
+                class="w-full p-2.5 border border-slate-300 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+            <button onclick="analyzeStock()" id="analyzeBtn"
+                class="w-full bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-sm active:bg-emerald-800 transition">
+                Analyze with AI
+            </button>
+        </div>
 
+        <!-- Result Box -->
+        <div id="resultBox" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hidden">
+            <h3 class="text-sm font-semibold mb-2 text-emerald-700">📊 AI Financial Analysis:</h3>
+            <div id="resultContent" class="text-xs text-slate-600 whitespace-pre-wrap leading-relaxed"></div>
+        </div>
+
+        <!-- Learning Center Section -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-4">
+            <h2 class="text-sm font-semibold mb-2 text-slate-700">📚 Sinhala Learning Center</h2>
+            <p class="text-xs text-slate-500 mb-3">කොළඹ කොටස් වෙළඳපොළ (CSE) ගැන පහසුවෙන් ඉගෙන ගන්න.</p>
+            <div class="space-y-2">
+                <button onclick="loadLearning('What is P/E Ratio in CSE?')" class="w-full text-left text-xs bg-slate-100 p-2 rounded hover:bg-slate-200 text-slate-700">
+                    💡 What is P/E Ratio? (මිල-ආදායම් අනුපාතය)
+                </button>
+                <button onclick="loadLearning('How to read Dividend Yield?')" class="w-full text-left text-xs bg-slate-100 p-2 rounded hover:bg-slate-200 text-slate-700">
+                    💡 What is Dividend Yield? (ලාභාංශ අස්වැන්න)
+                </button>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-slate-400">
-        © 2026 CSE AI Advisor. Built for Sri Lankan Investors.
+    <footer class="text-center p-4 text-xs text-slate-400 border-t border-slate-200">
+        © 2026 CSE AI Advisor. For Free Investor Education.
     </footer>
 
+    <!-- JavaScript for API Connection -->
+    <script>
+        async function analyzeStock(queryText = null) {
+            const company = queryText || document.getElementById('companyInput').value.trim();
+            const btn = document.getElementById('analyzeBtn');
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            if (!company) {
+                alert('ਕරුණාකර සමාගමක නමක් හෝ සෙවුම් පදයක් ඇතුළත් කරන්න!');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Analyzing... ⏳';
+            resultBox.classList.remove('hidden');
+            resultContent.innerText = 'Connecting to Gemini AI and analyzing CSE data...';
+
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ company })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    resultContent.innerText = data.result;
+                } else {
+                    resultContent.innerText = 'Error: ' + (data.error || 'Failed to fetch analysis');
+                }
+            } catch (err) {
+                resultContent.innerText = 'Connection error. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Analyze with AI';
+            }
+        }
+
+        function loadLearning(topic) {
+            document.getElementById('companyInput').value = topic;
+            analyzeStock(topic);
+        }
+    </script>
 </body>
 </html>
