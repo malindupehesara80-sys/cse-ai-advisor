@@ -5,10 +5,10 @@ export default async function handler(req, res) {
 
   try {
     const { company, prompt } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on Vercel.' });
+      return res.status(500).json({ error: 'GROQ_API_KEY is not configured on Vercel.' });
     }
 
     const targetQuery = company || prompt;
@@ -16,29 +16,35 @@ export default async function handler(req, res) {
 Analyze the company or query: "${targetQuery}". 
 Provide financial insights, valuation context, risks, and explain key terms clearly. Answer in a mix of clear English and Sinhala (සිංහලෙන්) where appropriate for local investors. Keep it structured and easy to read on mobile.`;
 
-    const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+    const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        contents: [{
-          parts: [{ text: fullPrompt }]
-        }]
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          {
+            role: 'user',
+            content: fullPrompt
+          }
+        ],
+        temperature: 0.7
       })
     });
 
-    const data = await geminiResponse.json();
+    const data = await groqResponse.json();
 
-    if (!geminiResponse.ok) {
-      throw new Error(data.error?.message || 'Failed to communicate with Gemini API');
+    if (!groqResponse.ok) {
+      throw new Error(data.error?.message || 'Failed to communicate with Groq API');
     }
 
-    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
+    const aiText = data.choices?.[0]?.message?.content || 'No response generated.';
 
     return res.status(200).json({ result: aiText });
   } catch (error) {
-    console.error('Gemini API Error:', error);
+    console.error('Groq API Error:', error);
     return res.status(500).json({ error: error.message || 'Failed to generate AI response' });
   }
 }
